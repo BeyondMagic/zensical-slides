@@ -22,7 +22,7 @@ jobs:
           python-version: 3.x
       - run: pip install zensical
       - name: Build documentation
-        working-directory: documentation/content
+        working-directory: documentation
         run: zensical build --clean
       - uses: actions/upload-pages-artifact@v5
         with:
