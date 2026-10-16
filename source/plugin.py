@@ -7,11 +7,11 @@ import sys
 import tomllib
 from pathlib import Path
 
-PLUGIN_ASSET_SUBDIR = Path("assets") / "plugin" / "zensical-apresentation"
+PLUGIN_ASSET_SUBDIR = Path("assets") / "plugin" / "zensical-slides"
 
 
-class ApresentationPlugin:
-    """A Zensical plugin that provides the 'apresentation' focus-slide widget."""
+class SlidesPlugin:
+    """A Zensical plugin that provides the 'slides' focus-slide widget."""
 
     def __init__(self) -> None:
         base_dir = Path(__file__).parent
@@ -33,6 +33,10 @@ class ApresentationPlugin:
     def get_css_files(self) -> list[Path]:
         """Return all CSS files provided by the plugin."""
         return sorted(self.stylesheet_dir.glob("*.css"))
+
+
+# Backward compatibility alias
+ApresentationPlugin = SlidesPlugin
 
 
 def find_config_file(target: Path | str | None = None) -> Path:
@@ -124,7 +128,7 @@ def install(target: Path | str | None = None) -> Path:
     plugin_assets = docs_dir / PLUGIN_ASSET_SUBDIR
     plugin_assets.mkdir(parents=True, exist_ok=True)
 
-    plugin = ApresentationPlugin()
+    plugin = SlidesPlugin()
     css_rel_paths: list[str] = []
     js_rel_paths: list[str] = []
 
@@ -155,10 +159,10 @@ def install(target: Path | str | None = None) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """CLI entrypoint for `zensical-apresentation`."""
+    """CLI entrypoint for `zensical-slides`."""
     parser = argparse.ArgumentParser(
-        prog="zensical-apresentation",
-        description="Install and manage the zensical-apresentation plugin.",
+        prog="zensical-slides",
+        description="Install and manage the zensical-slides plugin.",
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -176,7 +180,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "install":
         assets_dir = install(args.path)
-        print(f"Installed zensical-apresentation assets to {assets_dir}")
+        print(f"Installed zensical-slides assets to {assets_dir}")
         return 0
 
     parser.print_help()
