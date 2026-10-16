@@ -73,3 +73,29 @@ def test_install_without_docs_dir_via_cli(tmp_path: Path) -> None:
         "assets/plugin/zensical-slides/logic.js",
     ]
 
+
+def test_language_configuration(tmp_path: Path) -> None:
+    from zensical_slides import get_configured_language
+
+    assert get_configured_language({"project": {"theme": {"language": "ja"}}}) == "ja"
+    assert get_configured_language({"project": {"theme": {"language": "ja-JP"}}}) == "ja"
+    assert get_configured_language({"project": {"theme": {"language": "pt"}}}) == "pt"
+    assert get_configured_language({"project": {"theme": {"language": "pt-BR"}}}) == "pt"
+    assert get_configured_language({"project": {"theme": {"language": "en"}}}) == "en"
+    assert get_configured_language({"project": {"theme": {"language": "fr"}}}) == "en"
+    assert get_configured_language({}) == "en"
+
+    config_file = tmp_path / "zensical.toml"
+    config_file.write_text(
+        '[project]\n'
+        'site_name = "test-ja"\n'
+        '[project.theme]\n'
+        'language = "ja"\n',
+        encoding="utf-8",
+    )
+
+    assets_dir = install(config_file)
+    config_js = assets_dir / "config.js"
+    assert config_js.is_file()
+    assert 'language: "ja"' in config_js.read_text(encoding="utf-8")
+

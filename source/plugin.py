@@ -40,9 +40,10 @@ class SlidesPlugin:
 # "holding back on releasing a public API" to allow it to mature,
 # and the module system that will replace MkDocs-style plugins is still in progress.
 # This means a custom Python plugin cannot currently hook into Zensical's
-# build lifecycleto receive its configuration.
+# build lifecycle to receive its configuration.
 # The on_config, on_page_markdown, on_post_build hooks
 # you'd normally use in MkDocs are not exposed.
+ApresentationPlugin = SlidesPlugin
 def find_config_file(target: Path | str | None = None) -> Path:
     """Locate zensical.toml from an explicit file/directory path or current working directory."""
     if target is not None:
@@ -116,6 +117,22 @@ def _add_items_to_toml_list(toml_text: str, key: str, new_items: list[str]) -> s
     return f"[project]\n{formatted_list}\n{toml_text}"
 
 
+SUPPORTED_LANGUAGES = {"en", "ja", "pt"}
+
+
+def get_configured_language(config_data: dict) -> str:
+    """Read and normalize project.theme.language from zensical.toml.
+
+    Supported options: 'en' (English), 'ja' (Japanese), and 'pt' (Portuguese).
+    Defaults to 'en' if missing or not supported.
+    """
+    lang = config_data.get("project", {}).get("theme", {}).get("language", "en")
+    if not isinstance(lang, str):
+        return "en"
+    normalized = lang.strip().lower().split("-")[0].split("_")[0]
+    return normalized if normalized in SUPPORTED_LANGUAGES else "en"
+
+
 def install(target: Path | str | None = None) -> Path:
     """Copy plugin JS/CSS assets into the target Zensical docs_dir and register them in zensical.toml."""
     config_file = find_config_file(target)
@@ -146,6 +163,14 @@ def install(target: Path | str | None = None) -> Path:
         shutil.copy2(js_file, dest)
         if js_file.name == plugin.get_js_path().name:
             js_rel_paths.append(dest.relative_to(docs_dir).as_posix())
+
+    # Write the language configuration resolved from zensical.toml:project.theme.language
+    language = get_configured_language(config_data)
+    config_js = plugin_assets / "config.js"
+    config_js.write_text(
+        f'export const config = {{\n\tlanguage: "{language}"\n}};\n',
+        encoding="utf-8",
+    )
 
     updated_toml = raw_toml
     if css_rel_paths:
