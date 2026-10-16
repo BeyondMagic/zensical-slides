@@ -7,7 +7,7 @@ from zensical_slides import SlidesPlugin, install, main
 def test_plugin_asset_paths_exist() -> None:
     plugin = SlidesPlugin()
     assert plugin.get_js_path().is_file()
-    assert plugin.get_js_path().name == "logic.js"
+    assert plugin.get_js_path().name == "logic.mjs"
     assert plugin.get_css_path().is_file()
     assert plugin.get_css_path().name == "ui.css"
     assert len(plugin.get_js_files()) >= 1
@@ -32,7 +32,7 @@ def test_install_with_docs_dir_and_idempotency(tmp_path: Path) -> None:
     assets_dir = install(config_file)
     expected_dir = docs_dir / "assets" / "plugin" / "zensical-slides"
     assert assets_dir == expected_dir
-    assert (expected_dir / "logic.js").is_file()
+    assert (expected_dir / "logic.mjs").is_file()
     assert (expected_dir / "ui.css").is_file()
 
     parsed = tomllib.loads(config_file.read_text(encoding="utf-8"))
@@ -41,7 +41,7 @@ def test_install_with_docs_dir_and_idempotency(tmp_path: Path) -> None:
         "assets/plugin/zensical-slides/ui.css",
     ]
     assert parsed["project"]["extra_javascript"] == [
-        "assets/plugin/zensical-slides/logic.js",
+        "assets/plugin/zensical-slides/logic.mjs",
     ]
 
     # Running install a second time should be idempotent
@@ -62,7 +62,7 @@ def test_install_without_docs_dir_via_cli(tmp_path: Path) -> None:
     assert rc == 0
 
     expected_dir = tmp_path / "assets" / "plugin" / "zensical-slides"
-    assert (expected_dir / "logic.js").is_file()
+    assert (expected_dir / "logic.mjs").is_file()
     assert (expected_dir / "ui.css").is_file()
 
     parsed = tomllib.loads(config_file.read_text(encoding="utf-8"))
@@ -70,7 +70,7 @@ def test_install_without_docs_dir_via_cli(tmp_path: Path) -> None:
         "assets/plugin/zensical-slides/ui.css",
     ]
     assert parsed["project"]["extra_javascript"] == [
-        "assets/plugin/zensical-slides/logic.js",
+        "assets/plugin/zensical-slides/logic.mjs",
     ]
 
 
@@ -95,7 +95,7 @@ def test_language_configuration(tmp_path: Path) -> None:
     )
 
     assets_dir = install(config_file)
-    config_js = assets_dir / "config.js"
-    assert config_js.is_file()
-    assert 'language: "ja"' in config_js.read_text(encoding="utf-8")
+    config_mjs = assets_dir / "config.mjs"
+    assert config_mjs.is_file()
+    assert 'language: "ja"' in config_mjs.read_text(encoding="utf-8")
 

@@ -1,4 +1,4 @@
-import { DOMUtils } from './dom.js';
+import { DOMUtils } from './dom.mjs';
 
 export class KeyboardNavigator {
 	constructor(controller) {

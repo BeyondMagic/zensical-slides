@@ -1,4 +1,4 @@
-import { getCurrentTranslations } from './i18n.js';
+import { getCurrentTranslations } from './i18n.mjs';
 
 export class ControlsUI {
 	constructor(handlers = {}) {

@@ -1,10 +1,10 @@
-import { DOMUtils } from './dom.js';
-import { SlideParser } from './parser.js';
-import { SlideDeck } from './deck.js';
-import { FullscreenManager } from './fullscreen.js';
-import { ControlsUI } from './controls.js';
-import { MermaidIntegration } from './mermaid.js';
-import { KeyboardNavigator } from './keyboard.js';
+import { DOMUtils } from './dom.mjs';
+import { SlideParser } from './parser.mjs';
+import { SlideDeck } from './deck.mjs';
+import { FullscreenManager } from './fullscreen.mjs';
+import { ControlsUI } from './controls.mjs';
+import { MermaidIntegration } from './mermaid.mjs';
+import { KeyboardNavigator } from './keyboard.mjs';
 
 export class PresentationController {
 	constructor() {

@@ -20,15 +20,15 @@ class SlidesPlugin:
 
     def get_js_path(self) -> Path:
         """Return the path to the primary JavaScript asset."""
-        return self.javascript_dir / "logic.js"
+        return self.javascript_dir / "logic.mjs"
 
     def get_css_path(self) -> Path:
         """Return the path to the primary CSS asset."""
         return self.stylesheet_dir / "ui.css"
 
     def get_js_files(self) -> list[Path]:
-        """Return all JavaScript files provided by the plugin."""
-        return sorted(self.javascript_dir.glob("*.js"))
+        """Return all JavaScript / module files provided by the plugin."""
+        return sorted(self.javascript_dir.glob("*.mjs"))
 
     def get_css_files(self) -> list[Path]:
         """Return all CSS files provided by the plugin."""
@@ -167,8 +167,8 @@ def install(target: Path | str | None = None) -> Path:
 
     # Write the language configuration resolved from zensical.toml:project.theme.language
     language = get_configured_language(config_data)
-    config_js = plugin_assets / "config.js"
-    config_js.write_text(
+    config_mjs = plugin_assets / "config.mjs"
+    config_mjs.write_text(
         f'export const config = {{\n\tlanguage: "{language}"\n}};\n',
         encoding="utf-8",
     )
