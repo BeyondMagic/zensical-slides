@@ -37,7 +37,7 @@ pip install zensical-slides
 zensical-slides install
 ```
 
-The installer copies `logic.js` and `ui.css` into `<docs_dir>/assets/plugin/zensical-slides/` and registers them in `zensical.toml`:
+The installer copies `logic.mjs` and `ui.css` into `<docs_dir>/assets/plugin/zensical-slides/` and registers them in `zensical.toml`:
 
 ```toml
 [project]
@@ -45,7 +45,7 @@ extra_css = [
 	"assets/plugin/zensical-slides/ui.css",
 ]
 extra_javascript = [
-	"assets/plugin/zensical-slides/logic.js",
+	"assets/plugin/zensical-slides/logic.mjs",
 ]
 ```
 
