@@ -1,11 +1,11 @@
 import tomllib
 from pathlib import Path
 
-from zensical_apresentation import ApresentationPlugin, install, main
+from zensical_slides import SlidesPlugin, install, main
 
 
 def test_plugin_asset_paths_exist() -> None:
-    plugin = ApresentationPlugin()
+    plugin = SlidesPlugin()
     assert plugin.get_js_path().is_file()
     assert plugin.get_js_path().name == "logic.js"
     assert plugin.get_css_path().is_file()
@@ -30,7 +30,7 @@ def test_install_with_docs_dir_and_idempotency(tmp_path: Path) -> None:
     )
 
     assets_dir = install(config_file)
-    expected_dir = docs_dir / "assets" / "plugin" / "zensical-apresentation"
+    expected_dir = docs_dir / "assets" / "plugin" / "zensical-slides"
     assert assets_dir == expected_dir
     assert (expected_dir / "logic.js").is_file()
     assert (expected_dir / "ui.css").is_file()
@@ -38,10 +38,10 @@ def test_install_with_docs_dir_and_idempotency(tmp_path: Path) -> None:
     parsed = tomllib.loads(config_file.read_text(encoding="utf-8"))
     assert parsed["project"]["extra_css"] == [
         "assets/stylesheet/typography.css",
-        "assets/plugin/zensical-apresentation/ui.css",
+        "assets/plugin/zensical-slides/ui.css",
     ]
     assert parsed["project"]["extra_javascript"] == [
-        "assets/plugin/zensical-apresentation/logic.js",
+        "assets/plugin/zensical-slides/logic.js",
     ]
 
     # Running install a second time should be idempotent
@@ -61,15 +61,15 @@ def test_install_without_docs_dir_via_cli(tmp_path: Path) -> None:
     rc = main(["install", str(tmp_path)])
     assert rc == 0
 
-    expected_dir = tmp_path / "assets" / "plugin" / "zensical-apresentation"
+    expected_dir = tmp_path / "assets" / "plugin" / "zensical-slides"
     assert (expected_dir / "logic.js").is_file()
     assert (expected_dir / "ui.css").is_file()
 
     parsed = tomllib.loads(config_file.read_text(encoding="utf-8"))
     assert parsed["project"]["extra_css"] == [
-        "assets/plugin/zensical-apresentation/ui.css",
+        "assets/plugin/zensical-slides/ui.css",
     ]
     assert parsed["project"]["extra_javascript"] == [
-        "assets/plugin/zensical-apresentation/logic.js",
+        "assets/plugin/zensical-slides/logic.js",
     ]
 
