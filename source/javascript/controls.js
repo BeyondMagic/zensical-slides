@@ -1,3 +1,5 @@
+import { getCurrentTranslations } from './i18n.js';
+
 export class ControlsUI {
 	constructor(handlers = {}) {
 		this.handlers = handlers;
@@ -6,33 +8,38 @@ export class ControlsUI {
 	}
 
 	ensureFloatingButton(onToggle) {
+		const t = getCurrentTranslations();
 		let btn = document.getElementById('pres-toggle-btn');
 		if (!btn) {
 			btn = document.createElement('button');
 			btn.id = 'pres-toggle-btn';
-			btn.innerHTML = '&#9654; Show';
-			btn.title = 'Entrar no modo apresentacao (tecla P)';
+			btn.innerHTML = t.toggleButton;
+			btn.title = t.toggleTitle;
 			btn.addEventListener('click', onToggle);
 			document.body.appendChild(btn);
+		} else {
+			btn.innerHTML = t.toggleButton;
+			btn.title = t.toggleTitle;
 		}
 		this.floatingBtn = btn;
 		return btn;
 	}
 
 	ensureControls() {
+		const t = getCurrentTranslations();
 		let controls = document.getElementById('pres-controls');
 		if (!controls) {
 			controls = document.createElement('div');
 			controls.id = 'pres-controls';
 			controls.innerHTML =
-				'<button id="pres-prev-btn" class="pres-nav-btn pres-left" title="Slide anterior (Seta esquerda)">&#8249;</button>' +
-				'<button id="pres-next-btn" class="pres-nav-btn pres-right" title="Proximo slide (Seta direita)">&#8250;</button>' +
+				`<button id="pres-prev-btn" class="pres-nav-btn pres-left" title="${t.prevTitle}">&#8249;</button>` +
+				`<button id="pres-next-btn" class="pres-nav-btn pres-right" title="${t.nextTitle}">&#8250;</button>` +
 				'<div id="pres-bottom-bar">' +
 				'<span id="pres-current-title"></span>' +
 				'<div class="pres-right-actions">' +
 				'<span id="pres-counter"></span>' +
-				'<button id="pres-fullscreen-btn" title="Tela cheia">&#x26F6;</button>' +
-				'<button id="pres-exit-btn" title="Sair da apresentacao (Esc)">&#10005; Sair</button>' +
+				`<button id="pres-fullscreen-btn" title="${t.fullscreenTitle}">&#x26F6;</button>` +
+				`<button id="pres-exit-btn" title="${t.exitTitle}">${t.exitButton}</button>` +
 				'</div>' +
 				'</div>';
 			document.body.appendChild(controls);
