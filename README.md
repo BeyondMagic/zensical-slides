@@ -2,22 +2,22 @@
 
 <!-- This project will be used as live example of the plugin working. -->
 
-A [Zensical](https://zensical.org/) plugin that provides an apresentation focus-slide widget, see [live-example](https://beyondmagic.github.io/zensical-apresentation)
+A [Zensical](https://zensical.org/) plugin that provides a focus-slide widget, see [live-example](https://beyondmagic.github.io/zensical-slides)
 
 ## Installation
 
 ```sh
-$ pip install zensical-apresentation
+$ pip install zensical-slides
 ```
 <!--
 The following will:
-1. Set constant `plugin_assets` as `zensical.toml:docs_dir` (if docs_dir is not set, get the folder `zensical.toml`) + `assets/plugin/zensical-apresentation`;
+1. Set constant `plugin_assets` as `zensical.toml:docs_dir` (if docs_dir is not set, get the folder `zensical.toml`) + `assets/plugin/zensical-slides`;
 1. Copy `source/{javascript,stylesheet}/*` to new or existing at `plugin_assets`;
 2. Check and add relative path of `plugin_assets/*` to `zensical.toml:extra_javascript`.
 -->
 
 ```sh
-$ zensical-apresentation install
+$ zensical-slides install
 ```
 
 <!--
@@ -26,7 +26,7 @@ $ zensical-apresentation install
 
 ```toml
 # Register the plugin setting
-[project.plugins.apresentation]
+[project.plugins.slides]
 # No options yet.
 ```
 
