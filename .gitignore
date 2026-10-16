@@ -1,2 +1,6 @@
-# Python virtual environment
+# Python virtual environment and build/test caches
 .venv
+__pycache__/
+.pytest_cache/
+*.egg-info/
+dist/
