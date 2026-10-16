@@ -35,6 +35,14 @@ class SlidesPlugin:
         return sorted(self.stylesheet_dir.glob("*.css"))
 
 
+# NOTE:
+# Zensical's compatibility docs state explicitly that they are
+# "holding back on releasing a public API" to allow it to mature,
+# and the module system that will replace MkDocs-style plugins is still in progress.
+# This means a custom Python plugin cannot currently hook into Zensical's
+# build lifecycleto receive its configuration.
+# The on_config, on_page_markdown, on_post_build hooks
+# you'd normally use in MkDocs are not exposed.
 def find_config_file(target: Path | str | None = None) -> Path:
     """Locate zensical.toml from an explicit file/directory path or current working directory."""
     if target is not None:
