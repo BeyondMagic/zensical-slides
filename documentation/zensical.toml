@@ -1,20 +1,23 @@
 [project]
-site_url = "https://beyondmagic.github.io/template/"
-site_name = "template"
-site_description = "A template for software projects with documentation of all kinds of decision-records."
+site_url = "https://beyondmagic.github.io/zensical-apresentation/"
+site_name = "Zensical Apresentation"
+site_description = "A Zensical plugin that provides an apresentation focus-slide widget."
 site_author = "João V. Farias"
 docs_dir = "content"
 
 copyright = "BeyondMagic © 2026"
 
-repo_url = "https://github.com/BeyondMagic/template"
-repo_name = "BeyondMagic/template"
+repo_url = "https://github.com/BeyondMagic/zensical-apresentation"
+repo_name = "BeyondMagic/zensical-apresentation"
 edit_uri = "edit/main/documentation/"
 
 extra_css = [
-	"stylesheet/typography.css"
+	"assets/stylesheet/typography.css",
+	"assets/plugin/zensical-apresentation/ui.css",
 ]
-extra_javascript = []
+extra_javascript = [
+	"assets/plugin/zensical-apresentation/logic.js",
+]
 
 nav = [
   { "General" = "index.md" },
