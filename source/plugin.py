@@ -35,10 +35,6 @@ class SlidesPlugin:
         return sorted(self.stylesheet_dir.glob("*.css"))
 
 
-# Backward compatibility alias
-ApresentationPlugin = SlidesPlugin
-
-
 def find_config_file(target: Path | str | None = None) -> Path:
     """Locate zensical.toml from an explicit file/directory path or current working directory."""
     if target is not None:

@@ -1,3 +1,3 @@
-from .plugin import ApresentationPlugin, SlidesPlugin, install, main
+from .plugin import SlidesPlugin, install, main
 
-__all__ = ["SlidesPlugin", "ApresentationPlugin", "install", "main"]
+__all__ = ["SlidesPlugin", "install", "main"]
