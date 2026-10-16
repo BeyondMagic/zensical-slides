@@ -136,7 +136,8 @@ def install(target: Path | str | None = None) -> Path:
     for js_file in plugin.get_js_files():
         dest = plugin_assets / js_file.name
         shutil.copy2(js_file, dest)
-        js_rel_paths.append(dest.relative_to(docs_dir).as_posix())
+        if js_file.name == plugin.get_js_path().name:
+            js_rel_paths.append(dest.relative_to(docs_dir).as_posix())
 
     updated_toml = raw_toml
     if css_rel_paths:
