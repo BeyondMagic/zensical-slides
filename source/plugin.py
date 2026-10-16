@@ -156,7 +156,8 @@ def install(target: Path | str | None = None) -> Path:
     for css_file in plugin.get_css_files():
         dest = plugin_assets / css_file.name
         shutil.copy2(css_file, dest)
-        css_rel_paths.append(dest.relative_to(docs_dir).as_posix())
+        if css_file.name == plugin.get_css_path().name:
+            css_rel_paths.append(dest.relative_to(docs_dir).as_posix())
 
     for js_file in plugin.get_js_files():
         dest = plugin_assets / js_file.name
