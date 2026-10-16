@@ -4,7 +4,7 @@
 
 <span class="md-typeset-planned"> A large part of the problem of communication is with the introduction. If you want people to look at things from a certain point of view, or to appreciate certain aspects of your work, then you need to present this clearly at the start of the project.</span>
 
-`zensical-apresentation` turns any Zensical page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
+`zensical-slides` turns any Zensical page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
 
 ## How slide grouping works
 
@@ -33,19 +33,19 @@ You can move between slides using the on-screen buttons or keyboard shortcuts:
 Install the package with `pip` and run the CLI installer inside your project directory:
 
 ```sh
-pip install zensical-apresentation
-zensical-apresentation install
+pip install zensical-slides
+zensical-slides install
 ```
 
-The installer copies `logic.js` and `ui.css` into `<docs_dir>/assets/plugin/zensical-apresentation/` and registers them in `zensical.toml`:
+The installer copies `logic.js` and `ui.css` into `<docs_dir>/assets/plugin/zensical-slides/` and registers them in `zensical.toml`:
 
 ```toml
 [project]
 extra_css = [
-	"assets/plugin/zensical-apresentation/ui.css",
+	"assets/plugin/zensical-slides/ui.css",
 ]
 extra_javascript = [
-	"assets/plugin/zensical-apresentation/logic.js",
+	"assets/plugin/zensical-slides/logic.js",
 ]
 ```
 
@@ -57,65 +57,7 @@ Presentation mode styles blockquotes, tables, code blocks, and initializes Merma
 
 ```mermaid
 flowchart LR
-    MD["Markdown Page (## Sections)"] --> CLI["zensical-apresentation install"]
+    MD["Markdown Page (## Sections)"] --> CLI["zensical-slides install"]
     CLI --> BUILD["zensical build / serve"]
     BUILD --> SLIDES["Interactive Slide Deck (Press P)"]
 ```
-`zensical-apresentation` turns any Zensical page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
-
-## How slide grouping works
-
-When presentation mode starts, the script groups the article content by `<h2>` (`##`) headings:
-
-- Everything before the first `##` heading forms the opening slide.
-- Each `##` heading starts a new slide and includes all following elements until the next `##` heading.
-- Exiting presentation mode scrolls smoothly to the section you were viewing.
-
-<p class="apresentador">Speaker note (.apresentador): This paragraph uses the muted presenter style so you can keep talking points on screen without distracting from the primary text.</p>
-
-## Keyboard and button controls
-
-You can move between slides using the on-screen buttons or keyboard shortcuts:
-
-| Action | Shortcut | UI Control |
-| :--- | :--- | :--- |
-| Toggle presentation mode | ++p++ | **▶ Show** / **✕ Sair** |
-| Next slide | ++arrow-right++, ++page-down++, or ++space++ | Right arrow (`›`) |
-| Previous slide | ++arrow-left++ or ++page-up++ | Left arrow (`‹`) |
-| Toggle fullscreen | ++f++ | Fullscreen button (`⛶`) |
-| Exit presentation mode | ++escape++ | **✕ Sair** |
-
-## Installation
-
-Install the package with `pip` and run the CLI installer inside your project directory:
-
-```sh
-pip install zensical-apresentation
-zensical-apresentation install
-```
-
-The installer copies `logic.js` and `ui.css` into `<docs_dir>/assets/plugin/zensical-apresentation/` and registers them in `zensical.toml`:
-
-```toml
-[project]
-extra_css = [
-	"assets/plugin/zensical-apresentation/ui.css",
-]
-extra_javascript = [
-	"assets/plugin/zensical-apresentation/logic.js",
-]
-```
-
-## Diagrams and callouts in slides
-
-Presentation mode styles blockquotes, tables, code blocks, and initializes Mermaid diagrams when a page loads.
-
-> Good documentation works both as a reference you read at your own pace and as a visual aid when walking a team through a decision.
-
-```mermaid
-flowchart LR
-    MD["Markdown Page (## Sections)"] --> CLI["zensical-apresentation install"]
-    CLI --> BUILD["zensical build / serve"]
-    BUILD --> SLIDES["Interactive Slide Deck (Press P)"]
-```
-
