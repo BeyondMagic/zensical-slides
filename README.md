@@ -25,9 +25,35 @@
   /></a>
 </p>
 
+<p align="center">
+  <strong>Instant Slide Deck</strong>
+  &middot;
+  <strong>Automatic Sectioning</strong>
+  &middot;
+  <strong>Progression Bar</strong>
+  &middot;
+  <strong>Keyboard Controls</strong>
+  &middot;
+  <strong>Mermaid Diagrams</strong>
+  &middot;
+  <strong>Multilingual</strong>
+</p>
+
 ## Purpose
 
 To avoid creating slides in a separate presentation software, this plugin provides a focus-slide widget that allows you to create slides directly in your project documentation.
+
+## Features
+
+- **Instant Slide Deck** &mdash; Turn any documentation page into an interactive presentation with **▶ Show** or ++p++.
+- **Automatic Sectioning** &mdash; Automatically groups content by `##` (H2) headings into focused slides.
+- **Progression Bar** &mdash; Visual progress indicator (top or bottom) with click-to-jump slide navigation.
+- **Keyboard & On-Screen Controls** &mdash; Navigate with arrow keys, Space, Page Up/Down, or on-screen buttons.
+- **Fullscreen Mode** &mdash; Enter immersive presentation view with ++f++ or the fullscreen button.
+- **Diagrams & Code Highlighting** &mdash; Full support for Mermaid diagrams, code blocks, callouts, and tables.
+- **Presenter Notes** &mdash; Muted presenter talking points using `.apresentador`.
+- **Multilingual (i18n)** &mdash; Native localization in English, Japanese, and Portuguese.
+- **Single-Command Setup** &mdash; Easy installation via `zensical-slides install`.
 
 ## Installation
 
