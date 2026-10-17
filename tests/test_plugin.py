@@ -98,4 +98,61 @@ def test_language_configuration(tmp_path: Path) -> None:
     config_mjs = assets_dir / "config.mjs"
     assert config_mjs.is_file()
     assert 'language: "ja"' in config_mjs.read_text(encoding="utf-8")
+    assert 'progressBar: "top"' in config_mjs.read_text(encoding="utf-8")
+
+
+def test_progress_bar_configuration(tmp_path: Path) -> None:
+    from zensical_slides import get_configured_progress_bar
+
+    assert get_configured_progress_bar({}) == "top"
+    assert (
+        get_configured_progress_bar(
+            {"project": {"extra": {"slides": {"progress_bar": "bottom"}}}}
+        )
+        == "bottom"
+    )
+    assert (
+        get_configured_progress_bar(
+            {"project": {"theme": {"slides": {"progress_bar": "top"}}}}
+        )
+        == "top"
+    )
+    assert (
+        get_configured_progress_bar(
+            {"project": {"extra": {"slides": {"progress_bar": "none"}}}}
+        )
+        == "none"
+    )
+    assert (
+        get_configured_progress_bar(
+            {"project": {"extra": {"slides": {"progress_bar": False}}}}
+        )
+        == "none"
+    )
+    assert (
+        get_configured_progress_bar(
+            {"project": {"extra": {"slides": {"progress_bar": True}}}}
+        )
+        == "top"
+    )
+    assert (
+        get_configured_progress_bar(
+            {"project": {"extra": {"slides": {"progress_bar": "disabled"}}}}
+        )
+        == "none"
+    )
+
+    config_file = tmp_path / "zensical.toml"
+    config_file.write_text(
+        '[project]\n'
+        'site_name = "test-progress-bottom"\n'
+        '[project.extra.slides]\n'
+        'progress_bar = "bottom"\n',
+        encoding="utf-8",
+    )
+
+    assets_dir = install(config_file)
+    config_mjs = assets_dir / "config.mjs"
+    assert config_mjs.is_file()
+    assert 'progressBar: "bottom"' in config_mjs.read_text(encoding="utf-8")
 

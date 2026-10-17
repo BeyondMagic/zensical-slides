@@ -1,10 +1,14 @@
 import { getCurrentTranslations } from './i18n.mjs';
+import { config } from './config.mjs';
 
 export class ControlsUI {
 	constructor(handlers = {}) {
 		this.handlers = handlers;
 		this.controlsEl = null;
 		this.floatingBtn = null;
+		this.progressBarEl = null;
+		this.progressFillEl = null;
+		this.totalSlides = 0;
 	}
 
 	ensureFloatingButton(onToggle) {
@@ -49,6 +53,40 @@ export class ControlsUI {
 			document.getElementById('pres-fullscreen-btn')?.addEventListener('click', () => this.handlers.onFullscreen?.());
 			document.getElementById('pres-exit-btn')?.addEventListener('click', () => this.handlers.onExit?.());
 		}
+
+		const progressPosition = config?.progressBar ?? 'top';
+		if (progressPosition !== 'none' && progressPosition !== false) {
+			let progressContainer = document.getElementById('pres-progress-container');
+			if (!progressContainer) {
+				progressContainer = document.createElement('div');
+				progressContainer.id = 'pres-progress-container';
+				progressContainer.setAttribute('role', 'progressbar');
+				progressContainer.setAttribute('aria-label', t.progressTitle);
+				progressContainer.title = t.progressTitle;
+				progressContainer.innerHTML = '<div id="pres-progress-fill"></div>';
+				controls.appendChild(progressContainer);
+
+				progressContainer.addEventListener('click', (e) => {
+					if (!this.totalSlides) return;
+					const rect = progressContainer.getBoundingClientRect();
+					const clickX = e.clientX - rect.left;
+					const fraction = Math.max(0, Math.min(1, clickX / rect.width));
+					const targetIndex = Math.min(
+						this.totalSlides - 1,
+						Math.floor(fraction * this.totalSlides)
+					);
+					this.handlers.onGoTo?.(targetIndex);
+				});
+			} else {
+				progressContainer.setAttribute('aria-label', t.progressTitle);
+				progressContainer.title = t.progressTitle;
+			}
+
+			progressContainer.className = `pres-progress-${progressPosition}`;
+			this.progressBarEl = progressContainer;
+			this.progressFillEl = document.getElementById('pres-progress-fill');
+		}
+
 		this.controlsEl = controls;
 		return controls;
 	}
@@ -65,6 +103,7 @@ export class ControlsUI {
 	}
 
 	update({ currentIndex, total, title, isFirst, isLast }) {
+		this.totalSlides = total;
 		const prevBtn = document.getElementById('pres-prev-btn');
 		const nextBtn = document.getElementById('pres-next-btn');
 		const counter = document.getElementById('pres-counter');
@@ -86,6 +125,14 @@ export class ControlsUI {
 
 		if (titleEl) {
 			titleEl.textContent = title || '';
+		}
+
+		if (this.progressFillEl && total > 0) {
+			const percent = Math.min(100, Math.max(0, ((currentIndex + 1) / total) * 100));
+			this.progressFillEl.style.width = `${percent}%`;
+			this.progressBarEl?.setAttribute('aria-valuenow', String(currentIndex + 1));
+			this.progressBarEl?.setAttribute('aria-valuemin', '1');
+			this.progressBarEl?.setAttribute('aria-valuemax', String(total));
 		}
 	}
 }

@@ -118,6 +118,7 @@ def _add_items_to_toml_list(toml_text: str, key: str, new_items: list[str]) -> s
 
 
 SUPPORTED_LANGUAGES = {"en", "ja", "pt"}
+SUPPORTED_PROGRESS_BAR_POSITIONS = {"top", "bottom", "none"}
 
 
 def get_configured_language(config_data: dict) -> str:
@@ -131,6 +132,40 @@ def get_configured_language(config_data: dict) -> str:
         return "en"
     normalized = lang.strip().lower().split("-")[0].split("_")[0]
     return normalized if normalized in SUPPORTED_LANGUAGES else "en"
+
+
+def get_configured_progress_bar(config_data: dict) -> str:
+    """Read progress_bar position from zensical.toml.
+
+    Supported options: 'top' (default), 'bottom' (above the bottom bar), or 'none'.
+    Checks:
+      - [project.extra.slides] progress_bar = "top" | "bottom" | "none"
+      - [project.theme.slides] progress_bar = "top" | "bottom" | "none"
+      - [project.extra] slides_progress_bar = ...
+    """
+    project_cfg = config_data.get("project", {})
+    extra_cfg = project_cfg.get("extra", {})
+    slides_cfg = extra_cfg.get("slides")
+    if not isinstance(slides_cfg, dict):
+        slides_cfg = project_cfg.get("theme", {}).get("slides")
+
+    pos = None
+    if isinstance(slides_cfg, dict):
+        pos = slides_cfg.get("progress_bar")
+    if pos is None:
+        pos = extra_cfg.get("slides_progress_bar")
+
+    if isinstance(pos, bool):
+        return "top" if pos else "none"
+    if isinstance(pos, str):
+        normalized = pos.strip().lower()
+        if normalized in SUPPORTED_PROGRESS_BAR_POSITIONS:
+            return normalized
+        if normalized in ("off", "false", "disabled", "hidden"):
+            return "none"
+        if normalized in ("on", "true", "enabled"):
+            return "top"
+    return "top"
 
 
 def install(target: Path | str | None = None) -> Path:
@@ -165,11 +200,12 @@ def install(target: Path | str | None = None) -> Path:
         if js_file.name == plugin.get_js_path().name:
             js_rel_paths.append(dest.relative_to(docs_dir).as_posix())
 
-    # Write the language configuration resolved from zensical.toml:project.theme.language
+    # Write the configuration resolved from zensical.toml
     language = get_configured_language(config_data)
+    progress_bar = get_configured_progress_bar(config_data)
     config_mjs = plugin_assets / "config.mjs"
     config_mjs.write_text(
-        f'export const config = {{\n\tlanguage: "{language}"\n}};\n',
+        f'export const config = {{\n\tlanguage: "{language}",\n\tprogressBar: "{progress_bar}"\n}};\n',
         encoding="utf-8",
     )
 

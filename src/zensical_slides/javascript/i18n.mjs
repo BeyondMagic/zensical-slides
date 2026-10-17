@@ -8,7 +8,8 @@ export const TRANSLATIONS = {
 		nextTitle: 'Next slide (Right arrow)',
 		fullscreenTitle: 'Fullscreen',
 		exitButton: '&#10005; Exit',
-		exitTitle: 'Exit presentation (Esc)'
+		exitTitle: 'Exit presentation (Esc)',
+		progressTitle: 'Jump to slide'
 	},
 	ja: {
 		toggleButton: '&#9654; スライド',
@@ -17,7 +18,8 @@ export const TRANSLATIONS = {
 		nextTitle: '次のスライド (右矢印)',
 		fullscreenTitle: '全画面表示',
 		exitButton: '&#10005; 終了',
-		exitTitle: 'プレゼンテーションを終了 (Esc)'
+		exitTitle: 'プレゼンテーションを終了 (Esc)',
+		progressTitle: 'スライドに移動'
 	},
 	pt: {
 		toggleButton: '&#9654; Apresentar',
@@ -26,7 +28,8 @@ export const TRANSLATIONS = {
 		nextTitle: 'Próximo slide (Seta direita)',
 		fullscreenTitle: 'Tela cheia',
 		exitButton: '&#10005; Sair',
-		exitTitle: 'Sair da apresentação (Esc)'
+		exitTitle: 'Sair da apresentação (Esc)',
+		progressTitle: 'Ir para o slide'
 	}
 };
 
