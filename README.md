@@ -8,11 +8,26 @@
   </a>
 </p>
 
-# Project purpose
+<p align="center">
+  <strong>
+    A <a href="https://github.com/BeyondMagic/zensical-slides">Zensical</a> plugin that provides a focus-slide widget, see <a href="https://beyondmagic.github.io/zensical-slides">live-example</a>.
+  </strong>
+</p>
 
-<!-- This project will be used as live example of the plugin working. -->
+<p align="center">
+  <a href="https://github.com/BeyondMagic/zensical-slides/actions/workflows/publish.yml"><img
+    src="https://github.com/BeyondMagic/zensical-slides/actions/workflows/publish.yml/badge.svg?event=release"
+    alt="Publish to PyPI"
+  /></a>
+  <a href="https://github.com/BeyondMagic/zensical-slides/actions/workflows/docs.yml"><img
+    src="https://github.com/BeyondMagic/zensical-slides/actions/workflows/docs.yml/badge.svg?event=push"
+    alt="Documentation"
+  /></a>
+</p>
 
-A [Zensical](https://zensical.org/) plugin that provides a focus-slide widget, see [live-example](https://beyondmagic.github.io/zensical-slides)
+## Purpose
+
+To avoid creating slides in a separate presentation software, this plugin provides a focus-slide widget that allows you to create slides directly in your project documentation.
 
 ## Installation
 
