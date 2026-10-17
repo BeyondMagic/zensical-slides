@@ -2,6 +2,14 @@
 
 # Introduction
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logotype_white.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/logotype_transparent.png">
+    <img alt="Zensical Slides" src="assets/logotype.png" width="600">
+  </picture>
+</p>
+
 <span class="md-typeset-planned"> A large part of the problem of communication is with the introduction. If you want people to look at things from a certain point of view, or to appreciate certain aspects of your work, then you need to present this clearly at the start of the project.</span>
 
 `zensical-slides` turns any Zensical page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
