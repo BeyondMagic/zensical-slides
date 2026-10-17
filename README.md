@@ -30,17 +30,19 @@ The following will:
 $ zensical-slides install
 ```
 
-<!--
-
 ## Configuration
 
+Configure settings in `zensical.toml`:
+
 ```toml
-# Register the plugin setting
-[project.plugins.slides]
-# No options yet.
+[project.theme]
+language = "en" # "en" (English), "ja" (Japanese), or "pt" (Portuguese)
+
+[project.extra.slides]
+progress_bar = "top" # "top" (default), "bottom", or "none"
 ```
 
--->
+Run `zensical-slides install` to regenerate client assets whenever configuration changes.
 
 ___
 

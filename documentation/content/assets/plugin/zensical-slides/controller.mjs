@@ -13,7 +13,8 @@ export class PresentationController {
 			onPrev: () => this.prev(),
 			onNext: () => this.next(),
 			onFullscreen: () => this.toggleFullscreen(),
-			onExit: () => this.exit()
+			onExit: () => this.exit(),
+			onGoTo: (index) => this.goTo(index)
 		});
 		this.keyboard = new KeyboardNavigator(this);
 	}

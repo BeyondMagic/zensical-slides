@@ -30,11 +30,26 @@ You can move between slides using the on-screen buttons or keyboard shortcuts:
 
 | Action | Shortcut | UI Control |
 | :--- | :--- | :--- |
-| Toggle presentation mode | ++p++ | **▶ Show** / **✕ Sair** |
+| Toggle presentation mode | ++p++ | **▶ Show** / **✕ Exit** |
 | Next slide | ++arrow-right++, ++page-down++, or ++space++ | Right arrow (`›`) |
 | Previous slide | ++arrow-left++ or ++page-up++ | Left arrow (`‹`) |
+| Jump to slide | Click on progress bar | Progression bar (top or bottom) |
 | Toggle fullscreen | ++f++ | Fullscreen button (`⛶`) |
-| Exit presentation mode | ++escape++ | **✕ Sair** |
+| Exit presentation mode | ++escape++ | **✕ Exit** |
+
+## Configuration
+
+You can configure plugin options in `zensical.toml`:
+
+```toml
+[project.theme]
+language = "en" # "en" (English), "ja" (Japanese), or "pt" (Portuguese)
+
+[project.extra.slides]
+progress_bar = "top" # "top" (default), "bottom", or "none"
+```
+
+Re-run `zensical-slides install` whenever changing configuration settings to regenerate the client configuration.
 
 ## Installation
 

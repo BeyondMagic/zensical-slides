@@ -26,6 +26,9 @@ nav = [
 [project.extra]
 generator = false
 
+[project.extra.slides]
+progress_bar = "top"
+
 [project.theme]
 logo = "assets/logotype.svg"
 favicon = "assets/logotype.png"
