@@ -1,9 +1,9 @@
 <p align="center">
   <a href="https://beyondmagic.github.io/zensical-slides/">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="documentation/content/assets/logotype_white.png">
-      <source media="(prefers-color-scheme: light)" srcset="documentation/content/assets/logotype_transparent.png">
-      <img alt="Zensical Slides" src="documentation/content/assets/logotype.png" width="600">
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/logotype_white.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/logotype_black.png">
+      <img alt="Zensical Slides" src="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/logotype.png" width="600">
     </picture>
   </a>
 </p>
