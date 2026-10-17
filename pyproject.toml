@@ -6,6 +6,7 @@ build-backend = "hatchling.build"
 dynamic = ["version"]
 name = "zensical-slides"
 description = "A Zensical plugin to add a focus-slide button for sections."
+readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "LGPL-3.0-or-later"}
 dependencies = []
@@ -19,8 +20,15 @@ zensical-slides = "zensical_slides.plugin:main"
 [project.entry-points."zensical.plugins"]
 slides = "zensical_slides.plugin:SlidesPlugin"
 
-[tool.hatch.build.targets.wheel.force-include]
-"__init__.py" = "zensical_slides/__init__.py"
-"plugin.py" = "zensical_slides/plugin.py"
-"javascript" = "zensical_slides/javascript"
-"stylesheet" = "zensical_slides/stylesheet"
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "src/zensical_slides",
+  "tests",
+  "README.md",
+  "LICENSE",
+  "COPYING",
+  "COPYING.LESSER",
+]
