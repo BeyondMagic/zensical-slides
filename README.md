@@ -43,29 +43,21 @@
 
 To avoid creating slides in a separate presentation software, this plugin provides a focus-slide widget that allows you to create slides directly in your project documentation.
 
-## Features
-
-- **Instant Slide Deck** &mdash; Turn any documentation page into an interactive presentation with **▶ Show** or ++p++.
-- **Automatic Sectioning** &mdash; Automatically groups content by `##` (H2) headings into focused slides.
-- **Progression Bar** &mdash; Visual progress indicator (top or bottom) with click-to-jump slide navigation.
-- **Keyboard & On-Screen Controls** &mdash; Navigate with arrow keys, Space, Page Up/Down, or on-screen buttons.
-- **Fullscreen Mode** &mdash; Enter immersive presentation view with ++f++ or the fullscreen button.
-- **Diagrams & Code Highlighting** &mdash; Full support for Mermaid diagrams, code blocks, callouts, and tables.
-- **Presenter Notes** &mdash; Muted presenter talking points using `.apresentador`.
-- **Multilingual (i18n)** &mdash; Native localization in English, Japanese, and Portuguese.
-- **Single-Command Setup** &mdash; Easy installation via `zensical-slides install`.
+<p align="center">
+  <a href="https://beyondmagic.github.io/zensical-slides/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/image.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/image.png">
+      <img alt="Zensical Slides" src="https://raw.githubusercontent.com/BeyondMagic/zensical-slides/master/documentation/content/assets/image.png">
+    </picture>
+  </a>
+</p>
 
 ## Installation
 
 ```sh
 $ pip install zensical-slides
 ```
-<!--
-The following will:
-1. Set constant `plugin_assets` as `zensical.toml:docs_dir` (if docs_dir is not set, get the folder `zensical.toml`) + `assets/plugin/zensical-slides`;
-1. Copy `source/{javascript,stylesheet}/*` to new or existing at `plugin_assets`;
-2. Check and add relative path of `plugin_assets/*` to `zensical.toml:extra_javascript`.
--->
 
 ```sh
 $ zensical-slides install
