@@ -1,3 +1,13 @@
+<p align="center">
+  <a href="https://beyondmagic.github.io/zensical-slides/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="documentation/content/assets/logotype_white.png">
+      <source media="(prefers-color-scheme: light)" srcset="documentation/content/assets/logotype_transparent.png">
+      <img alt="Zensical Slides" src="documentation/content/assets/logotype.png" width="600">
+    </picture>
+  </a>
+</p>
+
 # Project purpose
 
 <!-- This project will be used as live example of the plugin working. -->
