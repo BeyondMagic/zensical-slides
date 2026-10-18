@@ -5,6 +5,7 @@ import { FullscreenManager } from './fullscreen.mjs';
 import { ControlsUI } from './controls.mjs';
 import { MermaidIntegration } from './mermaid.mjs';
 import { KeyboardNavigator } from './keyboard.mjs';
+import { StorageManager } from './storage.mjs';
 
 export class PresentationController {
 	constructor() {
@@ -27,9 +28,34 @@ export class PresentationController {
 		this.controls.ensureFloatingButton(() => this.toggle());
 		this.keyboard.bind();
 		MermaidIntegration.init();
+
+		// Auto-restore slide state from URL param or sessionStorage
+		const urlSlide = StorageManager.getUrlSlideParam();
+		const savedState = StorageManager.getSavedState();
+
+		if (urlSlide !== null) {
+			this.enter(urlSlide);
+		} else if (savedState && savedState.active) {
+			this.enter(savedState.slideIndex);
+		}
+
+		if (typeof window !== 'undefined') {
+			window.addEventListener('popstate', () => {
+				const param = StorageManager.getUrlSlideParam();
+				if (param !== null) {
+					if (!this.isActive) {
+						this.enter(param);
+					} else if (param !== this.deck.currentIndex) {
+						this.goTo(param);
+					}
+				} else if (this.isActive) {
+					this.exit();
+				}
+			});
+		}
 	}
 
-	enter() {
+	enter(initialIndex = 0) {
 		const article = DOMUtils.getArticleContent();
 		if (!article) return;
 
@@ -43,7 +69,8 @@ export class PresentationController {
 		document.documentElement.classList.add('presentation-mode');
 
 		this.controls.show();
-		this.goTo(0);
+		const targetIndex = Math.max(0, Math.min(slides.length - 1, initialIndex));
+		this.goTo(targetIndex);
 	}
 
 	exit() {
@@ -59,6 +86,9 @@ export class PresentationController {
 
 		const article = DOMUtils.getArticleContent();
 		this.deck.reset(article);
+
+		StorageManager.clearState();
+		StorageManager.syncUrl({ active: false });
 
 		if (lastSlide && lastSlide.elements && lastSlide.elements[0]) {
 			lastSlide.elements[0].scrollIntoView({ behavior: 'smooth' });
@@ -81,6 +111,9 @@ export class PresentationController {
 			isFirst: this.deck.isFirst,
 			isLast: this.deck.isLast
 		});
+
+		StorageManager.saveState({ active: true, slideIndex: this.deck.currentIndex });
+		StorageManager.syncUrl({ active: true, slideIndex: this.deck.currentIndex });
 	}
 
 	next() {

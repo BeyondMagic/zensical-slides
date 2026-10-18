@@ -11,6 +11,7 @@ def test_plugin_asset_paths_exist() -> None:
     assert plugin.get_css_path().is_file()
     assert plugin.get_css_path().name == "ui.css"
     assert len(plugin.get_js_files()) >= 1
+    assert "storage.mjs" in [f.name for f in plugin.get_js_files()]
     assert len(plugin.get_css_files()) >= 1
 
 
@@ -33,6 +34,7 @@ def test_install_with_docs_dir_and_idempotency(tmp_path: Path) -> None:
     expected_dir = docs_dir / "assets" / "plugin" / "zensical-slides"
     assert assets_dir == expected_dir
     assert (expected_dir / "logic.mjs").is_file()
+    assert (expected_dir / "storage.mjs").is_file()
     assert (expected_dir / "ui.css").is_file()
 
     parsed = tomllib.loads(config_file.read_text(encoding="utf-8"))
