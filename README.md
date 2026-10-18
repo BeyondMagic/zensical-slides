@@ -57,6 +57,36 @@ To avoid creating slides in a separate presentation software, this plugin provid
 
 ## Installation
 
+### Option 1: Direct URL (No installation required)
+
+Add the minified assets directly to your `zensical.toml`:
+
+**Latest version:**
+
+```toml
+[project]
+extra_css = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.css",
+]
+extra_javascript = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.mjs",
+]
+```
+
+**Versioned (pinned):**
+
+```toml
+[project]
+extra_css = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.css",
+]
+extra_javascript = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.mjs",
+]
+```
+
+### Option 2: Local installation via `pip`
+
 ```sh
 $ pip install zensical-slides
 ```

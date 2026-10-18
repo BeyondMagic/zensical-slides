@@ -4,8 +4,8 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logotype_white.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/logotype_transparent.png">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logotype_black.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/logotype_white.png">
     <img alt="Zensical Slides" src="assets/logotype.png" width="600">
   </picture>
 </p>
@@ -54,7 +54,37 @@ Re-run `zensical-slides install` whenever changing configuration settings to reg
 
 ## Installation
 
-Install the package with `pip` and run the CLI installer inside your project directory:
+### Option 1: Direct URL (No installation required)
+
+You can include the minified `.mjs` and `.css` bundles directly in your `zensical.toml` without installing any Python packages:
+
+**Latest version:**
+
+```toml
+[project]
+extra_css = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.css",
+]
+extra_javascript = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.mjs",
+]
+```
+
+**Versioned (pinned):**
+
+```toml
+[project]
+extra_css = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.css",
+]
+extra_javascript = [
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.mjs",
+]
+```
+
+### Option 2: Local installation via `pip`
+
+Alternatively, install the package with `pip` and run the CLI installer inside your project directory:
 
 ```sh
 pip install zensical-slides
