@@ -7,6 +7,7 @@ on:
 
 permissions:
   id-token: write # Trusted Publishing (OIDC)
+  contents: write # Upload release assets and update tag for CDN
 
 jobs:
   build-and-publish:
@@ -29,3 +30,25 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Build minified assets
+        run: make minify
+
+      - name: Attach minified assets to Release and update tag for CDN
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            TAG=$(git describe --tags --abbrev=0)
+          fi
+          gh release upload "$TAG" dist/zensical-slides.min.mjs dist/zensical-slides.min.css --clobber
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dist/zensical-slides.min.mjs dist/zensical-slides.min.css
+          git commit -m "chore(release): bundle minified assets for $TAG"
+          git tag -f "$TAG"
+          git push origin "$TAG" --force

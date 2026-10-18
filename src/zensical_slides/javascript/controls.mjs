@@ -54,7 +54,11 @@ export class ControlsUI {
 			document.getElementById('pres-exit-btn')?.addEventListener('click', () => this.handlers.onExit?.());
 		}
 
-		const progressPosition = config?.progressBar ?? 'top';
+		const progressPosition =
+			(typeof window !== 'undefined' && window.ZensicalSlidesConfig?.progressBar) ??
+			(typeof document !== 'undefined' && document.documentElement?.dataset?.slidesProgress) ??
+			config?.progressBar ??
+			'top';
 		if (progressPosition !== 'none' && progressPosition !== false) {
 			let progressContainer = document.getElementById('pres-progress-container');
 			if (!progressContainer) {
