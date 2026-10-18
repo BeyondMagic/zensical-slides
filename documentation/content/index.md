@@ -8,9 +8,9 @@ icon: lucide/book-open
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/logotype_black.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/logotype_white.png">
-    <img alt="Zensical Slides" src="assets/logotype.png" width="600">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logotype_white.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/logotype_black.png">
+    <img alt="Zensical Slides" src="assets/logotype_white-background_black-foreground.png" width="600">
   </picture>
 </p>
 

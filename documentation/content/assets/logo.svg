@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   version="1.1"
+   id="Capa_1"
+   width="800.00006"
+   height="800.00006"
+   viewBox="0 0 266.60502 266.60502"
+   xml:space="preserve"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1"><linearGradient
+     id="linearGradient6"><stop
+       style="stop-color:#ffba2e;stop-opacity:1;"
+       offset="0"
+       id="stop7" /><stop
+       style="stop-color:#ff7c37;stop-opacity:1;"
+       offset="0.5"
+       id="stop9" /><stop
+       style="stop-color:#ff8c89;stop-opacity:1;"
+       offset="1"
+       id="stop8" /></linearGradient><linearGradient
+     xlink:href="#linearGradient6"
+     id="linearGradient8"
+     x1="0"
+     y1="133.30299"
+     x2="266.60501"
+     y2="133.30299"
+     gradientUnits="userSpaceOnUse" /><linearGradient
+     xlink:href="#linearGradient6"
+     id="linearGradient2"
+     gradientUnits="userSpaceOnUse"
+     x1="0"
+     y1="133.30299"
+     x2="266.60501"
+     y2="133.30299" /></defs>
+<g
+   id="g1"
+   style="fill:url(#linearGradient8)">
+	<path
+   d="M 266.605,132.798 194.924,38.639 176.566,51.58 173.611,45.534 156.268,55.162 153.301,43.35 0,81.832 l 28.883,115.097 38.512,-9.67 16.586,34.814 35.523,-17.401 22.071,23.295 z m -75.534,-69.228 50.076,65.775 -19.305,14.7 -37.196,-75.942 z m -25.363,7.12 36.009,73.515 -20.581,10.072 L 160.832,73.4 Z m -143.682,24.334 118.07,-29.631 20.05,79.875 -118.067,29.637 z m 63.34,87.731 77.203,-19.387 -70.086,34.323 z m 97.726,-9.209 -39.543,30.098 -6.942,-7.329 z"
+   id="path1"
+   style="fill:url(#linearGradient2)" />
+</g>
+</svg>

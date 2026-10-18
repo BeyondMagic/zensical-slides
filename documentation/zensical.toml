@@ -30,8 +30,8 @@ generator = false
 progress_bar = "top"
 
 [project.theme]
-logo = "assets/logotype.svg"
-favicon = "assets/logotype.png"
+logo = "assets/logo.svg"
+favicon = "assets/logo.png"
 language = "en"
 features = [
   "announce.dismiss",
