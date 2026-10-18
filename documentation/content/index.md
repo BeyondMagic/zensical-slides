@@ -1,3 +1,7 @@
+---
+icon: lucide/book-open
+---
+
 <!-- markdownlint-disable MD033 -->
 
 # Introduction
