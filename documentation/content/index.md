@@ -20,7 +20,8 @@ When presentation mode starts, the script groups the article content by `<h2>` (
 
 - Everything before the first `##` heading forms the opening slide.
 - Each `##` heading starts a new slide and includes all following elements until the next `##` heading.
-- Exiting presentation mode scrolls smoothly to the section you were viewing.
+- State is preserved across page reloads (F5), and URLs synchronize with `?slide=N` for direct slide linking.
+- Exiting presentation mode scrolls smoothly to the section you were viewing and clears `?slide` from the URL.
 
 <p class="apresentador">Speaker note (.apresentador): This paragraph uses the muted presenter style so you can keep talking points on screen without distracting from the primary text.</p>
 

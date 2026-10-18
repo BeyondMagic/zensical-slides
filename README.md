@@ -32,6 +32,8 @@
   &middot;
   <strong>Progression Bar</strong>
   &middot;
+  <strong>URL Sync & Reload Persistence</strong>
+  &middot;
   <strong>Keyboard Controls</strong>
   &middot;
   <strong>Mermaid Diagrams</strong>
