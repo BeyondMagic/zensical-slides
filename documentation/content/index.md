@@ -16,7 +16,7 @@ icon: lucide/book-open
 
 <span class="md-typeset-planned"> A large part of the problem of communication is with the introduction. If you want people to look at things from a certain point of view, or to appreciate certain aspects of your work, then you need to present this clearly at the start of the project.</span>
 
-`zensical-slides` turns any Zensical page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
+`zensical-slides` turns any Zensical or MkDocs page into a slide deck directly in the browser. Click the **▶ Show** button in the bottom-right corner or press ++p++ to test presentation mode on this page.
 
 ## How slide grouping works
 
@@ -42,25 +42,13 @@ You can move between slides using the on-screen buttons or keyboard shortcuts:
 | Toggle fullscreen | ++f++ | Fullscreen button (`⛶`) |
 | Exit presentation mode | ++escape++ | **✕ Exit** |
 
-## Configuration
-
-You can configure plugin options in `zensical.toml`:
-
-```toml
-[project.theme]
-language = "en" # "en" (English), "ja" (Japanese), or "pt" (Portuguese)
-
-[project.extra.slides]
-progress_bar = "top" # "top" (default), "bottom", or "none"
-```
-
-Re-run `zensical-slides install` whenever changing configuration settings to regenerate the client configuration.
-
 ## Installation
 
-### Option 1: Direct URL (No installation required)
+### Option 1: Direct URL (Recommended for now, no installation required)
 
-You can include the minified `.mjs` and `.css` bundles directly in your `zensical.toml` without installing any Python packages:
+Because Zensical does not have an official public plugin API module system yet, including minified assets via CDN is the quickest way to get started. No Python package installation is needed.
+
+Add the assets to `zensical.toml` (or `mkdocs.yml`):
 
 **Latest version:**
 
@@ -86,16 +74,45 @@ extra_javascript = [
 ]
 ```
 
-### Option 2: Local installation via `pip`
+### Option 2: Markdown Extension (MkDocs and Zensical)
 
-Alternatively, install the package with `pip` and run the CLI installer inside your project directory:
+Install the Python package:
+
+```sh
+pip install zensical-slides
+```
+
+Enable `zensical_slides` in your markdown extensions. This works in both standard MkDocs and Zensical, bundling and inlining assets directly with full offline support.
+
+In `zensical.toml`:
+
+```toml
+[project.markdown_extensions.zensical_slides]
+progress_bar = "top"  # "top" (default), "bottom", or "none"
+language = "en"       # "en" (default), "ja", or "pt"
+assets = "local"      # "local" (default, bundled offline), "cdn", or "none"
+```
+
+In `mkdocs.yml`:
+
+```yaml
+markdown_extensions:
+  - zensical_slides:
+      progress_bar: top
+      language: en
+      assets: local
+```
+
+### Option 3: Local CLI Installer (`zensical-slides install`)
+
+This method copies assets into your project's `docs_dir` and registers them in `zensical.toml`. It is provided now for compatibility and ahead of future official Zensical module API support.
 
 ```sh
 pip install zensical-slides
 zensical-slides install
 ```
 
-The installer copies `logic.mjs` and `ui.css` into `<docs_dir>/assets/plugin/zensical-slides/` and registers them in `zensical.toml`:
+The installer copies `logic.mjs` and `ui.css` into `<docs_dir>/assets/plugin/zensical-slides/` and adds them to `zensical.toml`:
 
 ```toml
 [project]
@@ -105,6 +122,24 @@ extra_css = [
 extra_javascript = [
 	"assets/plugin/zensical-slides/logic.mjs",
 ]
+```
+
+When using Option 3, re-run `zensical-slides install` whenever you change settings in `[project.theme]` or `[project.extra.slides]`.
+
+## Configuration
+
+Depending on your installation method:
+
+- **Option 1 (Direct URL)**: Configure the language via `[project.theme]` (`language = "en"`) or HTML document `lang` attributes.
+- **Option 2 (Markdown Extension)**: Configure settings directly under `[project.markdown_extensions.zensical_slides]` in `zensical.toml` (or `markdown_extensions` in `mkdocs.yml`).
+- **Option 3 (CLI Installer)**: Configure settings in `[project.theme]` and `[project.extra.slides]`:
+
+```toml
+[project.theme]
+language = "en" # "en" (English), "ja" (Japanese), or "pt" (Portuguese)
+
+[project.extra.slides]
+progress_bar = "top" # "top" (default), "bottom", or "none"
 ```
 
 ## Diagrams and callouts in slides
