@@ -24,19 +24,28 @@ export class PresentationController {
 		return this.deck.active;
 	}
 
+	isSupportedViewport() {
+		if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+			return true;
+		}
+		return !window.matchMedia('(max-width: 44.984375em)').matches;
+	}
+
 	init() {
 		this.controls.ensureFloatingButton(() => this.toggle());
 		this.keyboard.bind();
 		MermaidIntegration.init();
 
-		// Auto-restore slide state from URL param or sessionStorage
-		const urlSlide = StorageManager.getUrlSlideParam();
-		const savedState = StorageManager.getSavedState();
+		// Auto-restore slide state from URL param or sessionStorage if supported
+		if (this.isSupportedViewport()) {
+			const urlSlide = StorageManager.getUrlSlideParam();
+			const savedState = StorageManager.getSavedState();
 
-		if (urlSlide !== null) {
-			this.enter(urlSlide);
-		} else if (savedState && savedState.active) {
-			this.enter(savedState.slideIndex);
+			if (urlSlide !== null) {
+				this.enter(urlSlide);
+			} else if (savedState && savedState.active) {
+				this.enter(savedState.slideIndex);
+			}
 		}
 
 		if (typeof window !== 'undefined') {
@@ -52,10 +61,26 @@ export class PresentationController {
 					this.exit();
 				}
 			});
+
+			if (typeof window.matchMedia === 'function') {
+				const mql = window.matchMedia('(max-width: 44.984375em)');
+				const handleMediaChange = (e) => {
+					if (e.matches && this.isActive) {
+						this.exit();
+					}
+				};
+				if (typeof mql.addEventListener === 'function') {
+					mql.addEventListener('change', handleMediaChange);
+				} else if (typeof mql.addListener === 'function') {
+					mql.addListener(handleMediaChange);
+				}
+			}
 		}
 	}
 
 	enter(initialIndex = 0) {
+		if (!this.isSupportedViewport()) return;
+
 		const article = DOMUtils.getArticleContent();
 		if (!article) return;
 

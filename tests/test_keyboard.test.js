@@ -1,6 +1,7 @@
 import { describe, expect, test, beforeEach } from 'bun:test';
 import { DOMUtils } from '../src/zensical_slides/javascript/dom.mjs';
 import { KeyboardNavigator } from '../src/zensical_slides/javascript/keyboard.mjs';
+import { PresentationController } from '../src/zensical_slides/javascript/controller.mjs';
 
 describe('DOMUtils.isInputElement & isInputActive', () => {
 	test('identifies standard input elements', () => {
@@ -137,5 +138,58 @@ describe('KeyboardNavigator', () => {
 		nav.handleKeyDown(bodyEvent);
 		expect(toggled).toBe(true);
 		expect(prevented).toBe(true);
+	});
+
+	test('does not toggle or prevent default on mobile viewport', () => {
+		let toggled = false;
+		let prevented = false;
+		const mockController = {
+			isActive: false,
+			isSupportedViewport: () => false,
+			toggle: () => { toggled = true; },
+		};
+
+		const nav = new KeyboardNavigator(mockController);
+		const bodyEvent = {
+			key: 'p',
+			ctrlKey: false,
+			metaKey: false,
+			altKey: false,
+			target: { tagName: 'BODY' },
+			preventDefault: () => { prevented = true; },
+		};
+
+		nav.handleKeyDown(bodyEvent);
+		expect(toggled).toBe(false);
+		expect(prevented).toBe(false);
+	});
+});
+
+describe('PresentationController viewport detection', () => {
+	test('isSupportedViewport returns false for max-width matching mobile query', () => {
+		const controller = new PresentationController();
+
+		// Save original matchMedia
+		const originalMatchMedia = globalThis.window?.matchMedia;
+
+		try {
+			globalThis.window = {
+				matchMedia: (query) => ({
+					matches: query.includes('max-width: 44.984375em'),
+				}),
+			};
+			expect(controller.isSupportedViewport()).toBe(false);
+
+			globalThis.window = {
+				matchMedia: (query) => ({
+					matches: false,
+				}),
+			};
+			expect(controller.isSupportedViewport()).toBe(true);
+		} finally {
+			if (originalMatchMedia) {
+				globalThis.window.matchMedia = originalMatchMedia;
+			}
+		}
 	});
 });

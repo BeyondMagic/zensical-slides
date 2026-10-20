@@ -19,6 +19,9 @@ export class KeyboardNavigator {
 
 		if (e.key === 'p' || e.key === 'P') {
 			if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+				if (typeof this.controller.isSupportedViewport === 'function' && !this.controller.isSupportedViewport()) {
+					return;
+				}
 				this.controller.toggle();
 				e.preventDefault();
 				return;

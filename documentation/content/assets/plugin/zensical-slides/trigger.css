@@ -24,3 +24,10 @@
 		transform: translateY(-1px);
 	}
 }
+
+/* Hide presentation trigger on mobile devices (cellphones below 45em / 720px) */
+@media screen and (max-width: 44.984375em) {
+	#pres-toggle-btn {
+		display: none !important;
+	}
+}
