@@ -1,54 +1,126 @@
-name: Publish to PyPI
+name: Release and Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version or bump keyword (e.g. 1.0.6, patch, minor, major)"
+        required: false
+        default: "patch"
 
 permissions:
-  id-token: write # Trusted Publishing (OIDC)
-  contents: write # Upload release assets and update tag for CDN
+  id-token: write # Trusted Publishing (OIDC) for PyPI
+  contents: write # Update documentation, create tag, and GitHub Release
 
 jobs:
-  build-and-publish:
+  release:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      startsWith(github.event.head_commit.message, 'feat(release):')
     runs-on: ubuntu-latest
     environment: pypi
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ github.token }}
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-
-      - name: Install build tools
-        run: python -m pip install --upgrade build
-
-      - name: Build sdist and wheel
-        run: python -m build
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - name: Determine release version
+        id: versioning
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_VERSION" ]; then
+            MSG="feat(release): $INPUT_VERSION"
+          else
+            MSG="$COMMIT_MSG"
+          fi
+          NEW_VERSION=$(python scripts/release.py resolve-version --message "$MSG")
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Target release version: $NEW_VERSION"
+
+      - name: Update documentation versioned links
+        run: |
+          python scripts/release.py update-docs --version "${{ steps.versioning.outputs.version }}"
+
+      - name: Commit documentation updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md documentation/content/index.md
+          if ! git diff --staged --quiet; then
+            git commit -m "docs: update versioned links for ${{ steps.versioning.outputs.version }} [skip ci]"
+            git push origin master
+          fi
+
       - name: Build minified assets
         run: make minify
 
-      - name: Attach minified assets to Release and update tag for CDN
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Create and push git tag
         run: |
-          TAG="${GITHUB_REF_NAME}"
-          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
-            TAG=$(git describe --tags --abbrev=0)
-          fi
-          gh release upload "$TAG" dist/zensical-slides.min.mjs dist/zensical-slides.min.css --clobber
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          TAG="${{ steps.versioning.outputs.version }}"
+          # Include minified assets in tag commit for jsDelivr CDN
           git add -f dist/zensical-slides.min.mjs dist/zensical-slides.min.css
-          git commit -m "chore(release): bundle minified assets for $TAG"
+          git commit -m "chore(release): bundle minified assets for $TAG [skip ci]" || true
           git tag -f "$TAG"
           git push origin "$TAG" --force
+
+      - name: Build Python packages
+        run: |
+          python -m pip install --upgrade build
+          python -m build --outdir dist-pypi
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist-pypi/
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          TAG="${{ steps.versioning.outputs.version }}"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_VERSION" ]; then
+            MSG="feat(release): $INPUT_VERSION"
+          else
+            MSG="$COMMIT_MSG"
+          fi
+
+          python scripts/release.py extract-notes --message "$MSG" > release_notes.md
+
+          if [ -s release_notes.md ]; then
+            gh release create "$TAG" \
+              dist/zensical-slides.min.mjs \
+              dist/zensical-slides.min.css \
+              dist-pypi/*.tar.gz \
+              dist-pypi/*.whl \
+              --title "$TAG" \
+              --notes-file release_notes.md \
+              --clobber
+          else
+            gh release create "$TAG" \
+              dist/zensical-slides.min.mjs \
+              dist/zensical-slides.min.css \
+              dist-pypi/*.tar.gz \
+              dist-pypi/*.whl \
+              --title "$TAG" \
+              --generate-notes \
+              --clobber
+          fi
