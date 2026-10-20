@@ -15,7 +15,7 @@ export class KeyboardNavigator {
 	}
 
 	handleKeyDown(e) {
-		if (DOMUtils.isInputElement(e.target)) return;
+		if (DOMUtils.isInputActive(e)) return;
 
 		if (e.key === 'p' || e.key === 'P') {
 			if (!e.ctrlKey && !e.metaKey && !e.altKey) {

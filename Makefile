@@ -4,7 +4,8 @@ install:
 	pip install -e ".[dev]"
 
 test:
-	pytest
+	pytest tests/test_plugin.py
+	bun test tests/test_keyboard.test.js
 
 lint:
 	ruff check .
