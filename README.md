@@ -68,10 +68,10 @@ Add the assets to `zensical.toml` (or `mkdocs.yml`):
 ```toml
 [project]
 extra_css = [
-	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.6/dist/zensical-slides.min.css",
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.css",
 ]
 extra_javascript = [
-	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.6/dist/zensical-slides.min.mjs",
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.mjs",
 ]
 ```
 

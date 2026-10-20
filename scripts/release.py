@@ -98,9 +98,9 @@ def extract_release_notes(commit_message: str) -> str:
 
 
 def update_documentation_links(new_version: str, files: list[Path]) -> list[Path]:
-    """Update versioned jsDelivr CDN links in documentation and README files."""
+    """Update versioned jsDelivr CDN links in documentation and README files (preserves @latest)."""
     cdn_pattern = re.compile(
-        r"(https://cdn\.jsdelivr\.net/gh/BeyondMagic/zensical-slides@)([^/]+)(/dist/)"
+        r"(https://cdn\.jsdelivr\.net/gh/BeyondMagic/zensical-slides@)(v?\d+\.\d+\.\d+[^/]*)(/dist/)"
     )
 
     updated: list[Path] = []

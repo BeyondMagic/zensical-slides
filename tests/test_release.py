@@ -56,9 +56,11 @@ def test_update_documentation_links(tmp_path: Path) -> None:
     sample_content = (
         '# Demo\n'
         'extra_css = [\n'
+        '\t"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.css",\n'
         '\t"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.css",\n'
         ']\n'
         'extra_javascript = [\n'
+        '\t"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@latest/dist/zensical-slides.min.mjs",\n'
         '\t"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.5/dist/zensical-slides.min.mjs",\n'
         ']\n'
     )
@@ -68,6 +70,8 @@ def test_update_documentation_links(tmp_path: Path) -> None:
     updated = update_documentation_links("1.0.6", [doc_file])
     assert len(updated) == 1
     content = doc_file.read_text(encoding="utf-8")
+    assert "@latest/dist/zensical-slides.min.css" in content
+    assert "@latest/dist/zensical-slides.min.mjs" in content
     assert "@1.0.6/dist/zensical-slides.min.css" in content
     assert "@1.0.6/dist/zensical-slides.min.mjs" in content
     assert "@1.0.5" not in content
