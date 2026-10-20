@@ -80,10 +80,10 @@ extra_javascript = [
 ```toml
 [project]
 extra_css = [
-	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.7/dist/zensical-slides.min.css",
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.8/dist/zensical-slides.min.css",
 ]
 extra_javascript = [
-	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.7/dist/zensical-slides.min.mjs",
+	"https://cdn.jsdelivr.net/gh/BeyondMagic/zensical-slides@1.0.8/dist/zensical-slides.min.mjs",
 ]
 ```
 
