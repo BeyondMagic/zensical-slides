@@ -75,3 +75,4 @@ def test_update_documentation_links(tmp_path: Path) -> None:
     # Running with same version should not modify
     updated_again = update_documentation_links("1.0.6", [doc_file])
     assert len(updated_again) == 0
+
