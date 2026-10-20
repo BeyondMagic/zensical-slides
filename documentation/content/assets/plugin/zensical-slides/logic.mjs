@@ -3,19 +3,26 @@
  */
 import { PresentationController } from './controller.mjs';
 
-const controller = new PresentationController();
+let controller = typeof window !== 'undefined' ? window.ZensicalSlides : null;
 
-function setup() {
-	controller.init();
+if (!controller) {
+	controller = new PresentationController();
+
+	function setup() {
+		controller.init();
+	}
+
+	if (typeof window !== 'undefined' && window.document$) {
+		window.document$.subscribe(setup);
+	} else if (typeof document !== 'undefined' && document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setup);
+	} else {
+		setup();
+	}
+
+	if (typeof window !== 'undefined') {
+		window.ZensicalSlides = controller;
+	}
 }
 
-if (window.document$) {
-	window.document$.subscribe(setup);
-} else if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', setup);
-} else {
-	setup();
-}
-
-window.ZensicalSlides = controller;
 export default controller;

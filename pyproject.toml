@@ -20,6 +20,9 @@ zensical-slides = "zensical_slides.plugin:main"
 [project.entry-points."zensical.plugins"]
 slides = "zensical_slides.plugin:SlidesPlugin"
 
+[project.entry-points."markdown.extensions"]
+zensical_slides = "zensical_slides.extension:ZensicalSlidesExtension"
+
 [tool.hatch.version]
 source = "vcs"
 

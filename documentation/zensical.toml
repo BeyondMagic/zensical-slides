@@ -101,3 +101,7 @@ pymdownx.tabbed.alternate_style = true
 pymdownx.tabbed.combine_header_slug = true
 pymdownx.tasklist.custom_checkbox = true
 pymdownx.tilde = {}
+
+[project.markdown_extensions.zensical_slides]
+progress_bar = "bottom"
+language = "en"
