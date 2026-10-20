@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true
           token: ${{ github.token }}
 
       - name: Setup Python
@@ -53,31 +54,30 @@ jobs:
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
           echo "Target release version: $NEW_VERSION"
 
+      - name: Build minified assets
+        run: make minify
+
       - name: Update documentation versioned links
         run: |
           python scripts/release.py update-docs --version "${{ steps.versioning.outputs.version }}"
 
-      - name: Commit documentation updates
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md documentation/content/index.md
-          if ! git diff --staged --quiet; then
-            git commit -m "docs: update versioned links for ${{ steps.versioning.outputs.version }} [skip ci]"
-            git push origin master
-          fi
-
-      - name: Build minified assets
-        run: make minify
-
-      - name: Create and push git tag
+      - name: Commit release assets and push tag
         run: |
           TAG="${{ steps.versioning.outputs.version }}"
-          # Include minified assets in tag commit for jsDelivr CDN
+          git checkout -B master
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage documentation updates and minified assets
+          git add README.md documentation/content/index.md
           git add -f dist/zensical-slides.min.mjs dist/zensical-slides.min.css
-          git commit -m "chore(release): bundle minified assets for $TAG [skip ci]" || true
+
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(release): $TAG [skip ci]"
+          fi
+
           git tag -f "$TAG"
-          git push origin "$TAG" --force
+          git push origin master "$TAG" --force
 
       - name: Build Python packages
         run: |
