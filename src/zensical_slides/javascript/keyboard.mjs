@@ -7,11 +7,17 @@ export class KeyboardNavigator {
 	}
 
 	bind() {
-		document.addEventListener('keydown', this.onKeyDown);
+		document.addEventListener('keydown', this.onKeyDown, true);
 	}
 
 	unbind() {
-		document.removeEventListener('keydown', this.onKeyDown);
+		document.removeEventListener('keydown', this.onKeyDown, true);
+	}
+
+	consumeEvent(e) {
+		e.preventDefault?.();
+		e.stopPropagation?.();
+		e.stopImmediatePropagation?.();
 	}
 
 	handleKeyDown(e) {
@@ -23,10 +29,11 @@ export class KeyboardNavigator {
 					return;
 				}
 				if (typeof this.controller.isNavigationPending === 'function' && this.controller.isNavigationPending()) {
+					this.consumeEvent(e);
 					return;
 				}
 				this.controller.toggle();
-				e.preventDefault();
+				this.consumeEvent(e);
 				return;
 			}
 		}
@@ -35,16 +42,16 @@ export class KeyboardNavigator {
 
 		if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
 			this.controller.next();
-			e.preventDefault();
+			this.consumeEvent(e);
 		} else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
 			this.controller.prev();
-			e.preventDefault();
+			this.consumeEvent(e);
 		} else if (e.key === 'Escape') {
 			this.controller.exit();
-			e.preventDefault();
+			this.consumeEvent(e);
 		} else if (e.key === 'f' || e.key === 'F') {
 			this.controller.toggleFullscreen();
-			e.preventDefault();
+			this.consumeEvent(e);
 		}
 	}
 }

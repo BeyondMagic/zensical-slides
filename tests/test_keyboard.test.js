@@ -194,9 +194,11 @@ describe('PresentationController viewport detection', () => {
 		}
 	});
 
-	test('KeyboardNavigator ignores P when navigation is pending', () => {
+	test('KeyboardNavigator ignores P toggle while still blocking propagation when navigation is pending', () => {
 		let toggled = false;
 		let prevented = false;
+		let stopped = false;
+		let immediateStopped = false;
 		const nav = new KeyboardNavigator({
 			isActive: false,
 			isSupportedViewport: () => true,
@@ -211,10 +213,72 @@ describe('PresentationController viewport detection', () => {
 			altKey: false,
 			target: { tagName: 'BODY' },
 			preventDefault: () => { prevented = true; },
+			stopPropagation: () => { stopped = true; },
+			stopImmediatePropagation: () => { immediateStopped = true; },
 		});
 
 		expect(toggled).toBe(false);
-		expect(prevented).toBe(false);
+		expect(prevented).toBe(true);
+		expect(stopped).toBe(true);
+		expect(immediateStopped).toBe(true);
+	});
+
+	test('KeyboardNavigator stops event propagation on P and active slide keys so Zensical prev shortcut cannot fire', () => {
+		let toggled = 0;
+		let exited = 0;
+		const nav = new KeyboardNavigator({
+			isActive: true,
+			isSupportedViewport: () => true,
+			isNavigationPending: () => false,
+			toggle: () => { toggled += 1; },
+			exit: () => { exited += 1; },
+			next: () => {},
+			prev: () => {},
+			toggleFullscreen: () => {},
+		});
+
+		for (const key of ['p', 'Escape']) {
+			let prevented = false;
+			let stopped = false;
+			let immediateStopped = false;
+			nav.handleKeyDown({
+				key,
+				ctrlKey: false,
+				metaKey: false,
+				altKey: false,
+				target: { tagName: 'BODY' },
+				preventDefault: () => { prevented = true; },
+				stopPropagation: () => { stopped = true; },
+				stopImmediatePropagation: () => { immediateStopped = true; },
+			});
+			expect(prevented).toBe(true);
+			expect(stopped).toBe(true);
+			expect(immediateStopped).toBe(true);
+		}
+
+		expect(toggled).toBe(1);
+		expect(exited).toBe(1);
+	});
+
+	test('KeyboardNavigator registers and removes keydown listener in capture phase', () => {
+		const prevDocument = globalThis.document;
+		const calls = [];
+		globalThis.document = {
+			addEventListener: (type, fn, options) => calls.push(['add', type, fn, options]),
+			removeEventListener: (type, fn, options) => calls.push(['remove', type, fn, options]),
+		};
+
+		try {
+			const nav = new KeyboardNavigator({});
+			nav.bind();
+			nav.unbind();
+			expect(calls).toEqual([
+				['add', 'keydown', nav.onKeyDown, true],
+				['remove', 'keydown', nav.onKeyDown, true],
+			]);
+		} finally {
+			globalThis.document = prevDocument;
+		}
 	});
 });
 
