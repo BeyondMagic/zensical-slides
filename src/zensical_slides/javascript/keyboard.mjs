@@ -23,7 +23,7 @@ export class KeyboardNavigator {
 	handleKeyDown(e) {
 		if (DOMUtils.isInputActive(e)) return;
 
-		if (e.key === 'p' || e.key === 'P') {
+		if (e.key === 'P') {
 			if (!e.ctrlKey && !e.metaKey && !e.altKey) {
 				if (typeof this.controller.isSupportedViewport === 'function' && !this.controller.isSupportedViewport()) {
 					return;

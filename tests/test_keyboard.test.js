@@ -105,7 +105,7 @@ describe('KeyboardNavigator', () => {
 		// Event from an input
 		let prevented = false;
 		const inputEvent = {
-			key: 'p',
+			key: 'P',
 			ctrlKey: false,
 			metaKey: false,
 			altKey: false,
@@ -127,9 +127,22 @@ describe('KeyboardNavigator', () => {
 		expect(nextCalled).toBe(false);
 		expect(prevented).toBe(false);
 
-		// Normal event on body triggers toggle
-		const bodyEvent = {
+		// Lowercase 'p' is left untouched for Zensical's built-in prev-page shortcut
+		const lowercaseEvent = {
 			key: 'p',
+			ctrlKey: false,
+			metaKey: false,
+			altKey: false,
+			target: { tagName: 'BODY' },
+			preventDefault: () => { prevented = true; },
+		};
+		nav.handleKeyDown(lowercaseEvent);
+		expect(toggled).toBe(false);
+		expect(prevented).toBe(false);
+
+		// Uppercase 'P' on body triggers toggle
+		const bodyEvent = {
+			key: 'P',
 			ctrlKey: false,
 			metaKey: false,
 			altKey: false,
@@ -152,7 +165,7 @@ describe('KeyboardNavigator', () => {
 
 		const nav = new KeyboardNavigator(mockController);
 		const bodyEvent = {
-			key: 'p',
+			key: 'P',
 			ctrlKey: false,
 			metaKey: false,
 			altKey: false,
@@ -207,7 +220,7 @@ describe('PresentationController viewport detection', () => {
 		});
 
 		nav.handleKeyDown({
-			key: 'p',
+			key: 'P',
 			ctrlKey: false,
 			metaKey: false,
 			altKey: false,
@@ -237,7 +250,7 @@ describe('PresentationController viewport detection', () => {
 			toggleFullscreen: () => {},
 		});
 
-		for (const key of ['p', 'Escape']) {
+		for (const key of ['P', 'Escape']) {
 			let prevented = false;
 			let stopped = false;
 			let immediateStopped = false;
