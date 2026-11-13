@@ -4,12 +4,17 @@ on:
     branches:
       - master
       - main
+  workflow_dispatch:
 permissions:
   contents: read
   pages: write
   id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
   deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || !startsWith(github.event.head_commit.message, 'feat(release):') }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
