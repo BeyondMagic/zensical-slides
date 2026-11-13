@@ -18,10 +18,26 @@ export class PresentationController {
 			onGoTo: (index) => this.goTo(index)
 		});
 		this.keyboard = new KeyboardNavigator(this);
+		this._renderedPathname = null;
+		this._globalListenersBound = false;
 	}
 
 	get isActive() {
 		return this.deck.active;
+	}
+
+	getCurrentPathname() {
+		if (typeof window === 'undefined' || !window.location || typeof window.location.pathname !== 'string') {
+			return null;
+		}
+		return window.location.pathname;
+	}
+
+	isNavigationPending() {
+		if (this._renderedPathname === null) return false;
+		const currentPathname = this.getCurrentPathname();
+		if (currentPathname === null) return false;
+		return currentPathname !== this._renderedPathname;
 	}
 
 	isSupportedViewport() {
@@ -32,6 +48,11 @@ export class PresentationController {
 	}
 
 	init() {
+		this._renderedPathname = this.getCurrentPathname();
+		if (this.isActive) {
+			this.resetActivePresentation({ restoreScroll: false, syncStorage: false });
+		}
+
 		this.controls.ensureFloatingButton(() => this.toggle());
 		this.keyboard.bind();
 		MermaidIntegration.init();
@@ -48,8 +69,16 @@ export class PresentationController {
 			}
 		}
 
-		if (typeof window !== 'undefined') {
+		if (typeof window !== 'undefined' && !this._globalListenersBound) {
+			this._globalListenersBound = true;
+
 			window.addEventListener('popstate', () => {
+				if (this.isNavigationPending()) {
+					if (this.isActive) {
+						this.resetActivePresentation({ restoreScroll: false, syncStorage: false });
+					}
+					return;
+				}
 				const param = StorageManager.getUrlSlideParam();
 				if (param !== null) {
 					if (!this.isActive) {
@@ -79,7 +108,7 @@ export class PresentationController {
 	}
 
 	enter(initialIndex = 0) {
-		if (!this.isSupportedViewport()) return;
+		if (!this.isSupportedViewport() || this.isNavigationPending()) return;
 
 		const article = DOMUtils.getArticleContent();
 		if (!article) return;
@@ -98,7 +127,7 @@ export class PresentationController {
 		this.goTo(targetIndex);
 	}
 
-	exit() {
+	resetActivePresentation({ restoreScroll = false, syncStorage = true } = {}) {
 		if (!this.deck.active) return;
 
 		const lastSlide = this.deck.currentSlide;
@@ -112,15 +141,31 @@ export class PresentationController {
 		const article = DOMUtils.getArticleContent();
 		this.deck.reset(article);
 
-		StorageManager.clearState();
-		StorageManager.syncUrl({ active: false });
+		if (syncStorage) {
+			StorageManager.clearState();
+			StorageManager.syncUrl({ active: false });
+		}
 
-		if (lastSlide && lastSlide.elements && lastSlide.elements[0]) {
+		if (restoreScroll && lastSlide && lastSlide.elements && lastSlide.elements[0]) {
 			lastSlide.elements[0].scrollIntoView({ behavior: 'smooth' });
 		}
 	}
 
+	exit() {
+		const pending = this.isNavigationPending();
+		this.resetActivePresentation({
+			restoreScroll: !pending,
+			syncStorage: !pending
+		});
+	}
+
 	toggle() {
+		if (this.isNavigationPending()) {
+			if (this.isActive) {
+				this.resetActivePresentation({ restoreScroll: false, syncStorage: false });
+			}
+			return;
+		}
 		this.isActive ? this.exit() : this.enter();
 	}
 

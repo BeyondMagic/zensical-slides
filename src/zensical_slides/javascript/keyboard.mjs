@@ -22,6 +22,9 @@ export class KeyboardNavigator {
 				if (typeof this.controller.isSupportedViewport === 'function' && !this.controller.isSupportedViewport()) {
 					return;
 				}
+				if (typeof this.controller.isNavigationPending === 'function' && this.controller.isNavigationPending()) {
+					return;
+				}
 				this.controller.toggle();
 				e.preventDefault();
 				return;

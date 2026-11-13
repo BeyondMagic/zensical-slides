@@ -77,7 +77,9 @@ export const StorageManager = {
 				url.searchParams.delete('slide');
 			}
 			const newUrl = url.pathname + url.search + url.hash;
-			window.history.replaceState(null, '', newUrl);
+			const currentUrl = window.location.pathname + window.location.search + window.location.hash;
+			if (newUrl === currentUrl) return;
+			window.history.replaceState(window.history.state ?? null, '', newUrl);
 		} catch {
 			// Ignore
 		}
