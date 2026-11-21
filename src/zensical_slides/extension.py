@@ -34,6 +34,10 @@ class ZensicalSlidesExtension(Extension):
         self.config = {
             "progress_bar": ["top", "Position of the slide progress bar ('top' or 'bottom')"],
             "language": ["en", "Language code for the slide UI ('en', 'pt', 'ja')"],
+            "max_heading_level": [
+                2,
+                "Maximum heading level that starts a new slide (2 for H2, 3 for H2+H3, up to 6)",
+            ],
             "assets": [
                 "local",
                 "Asset loading mode: 'local' (bundled inline), 'cdn', or 'none'",
@@ -113,10 +117,16 @@ class SlidesAssetInjector(Postprocessor):
         return f'<script type="module" src="{url}"></script>'
 
     def _get_config_script(self) -> str:
-        cfg = {
+        cfg: dict[str, Any] = {
             "progress_bar": self.config.get("progress_bar", "top"),
             "language": self.config.get("language", "en"),
         }
+        try:
+            level = int(self.config.get("max_heading_level", 2))
+        except (TypeError, ValueError):
+            level = 2
+        if 2 < level <= 6:
+            cfg["max_heading_level"] = level
         return f"<script>window.ZENSICAL_SLIDES_CONFIG = {json.dumps(cfg)};</script>"
 
     def run(self, text: str) -> str:

@@ -158,3 +158,41 @@ def test_progress_bar_configuration(tmp_path: Path) -> None:
     assert config_mjs.is_file()
     assert 'progressBar: "bottom"' in config_mjs.read_text(encoding="utf-8")
 
+
+def test_max_heading_level_configuration(tmp_path: Path) -> None:
+    from zensical_slides import get_configured_max_heading_level
+
+    assert get_configured_max_heading_level({}) == 2
+    assert (
+        get_configured_max_heading_level(
+            {"project": {"extra": {"slides": {"max_heading_level": 3}}}}
+        )
+        == 3
+    )
+    assert (
+        get_configured_max_heading_level(
+            {"project": {"theme": {"slides": {"max_heading_level": "h4"}}}}
+        )
+        == 4
+    )
+    assert (
+        get_configured_max_heading_level(
+            {"project": {"extra": {"slides_max_heading_level": 9}}}
+        )
+        == 2
+    )
+
+    config_file = tmp_path / "zensical.toml"
+    config_file.write_text(
+        '[project]\n'
+        'site_name = "test-level-3"\n'
+        '[project.extra.slides]\n'
+        'max_heading_level = 3\n',
+        encoding="utf-8",
+    )
+
+    assets_dir = install(config_file)
+    config_mjs = assets_dir / "config.mjs"
+    assert config_mjs.is_file()
+    assert "maxHeadingLevel: 3" in config_mjs.read_text(encoding="utf-8")
+

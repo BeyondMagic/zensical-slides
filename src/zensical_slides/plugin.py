@@ -121,6 +121,37 @@ SUPPORTED_LANGUAGES = {"en", "ja", "pt"}
 SUPPORTED_PROGRESS_BAR_POSITIONS = {"top", "bottom", "none"}
 
 
+def get_configured_max_heading_level(config_data: dict) -> int:
+    """Read max_heading_level from zensical.toml (2 to 6, defaults to 2).
+
+    Checks:
+      - [project.extra.slides] max_heading_level = 2..6
+      - [project.theme.slides] max_heading_level = 2..6
+      - [project.extra] slides_max_heading_level = 2..6
+    """
+    project_cfg = config_data.get("project", {})
+    extra_cfg = project_cfg.get("extra", {})
+    slides_cfg = extra_cfg.get("slides")
+    if not isinstance(slides_cfg, dict):
+        slides_cfg = project_cfg.get("theme", {}).get("slides")
+
+    raw = None
+    if isinstance(slides_cfg, dict):
+        raw = slides_cfg.get("max_heading_level")
+    if raw is None:
+        raw = extra_cfg.get("slides_max_heading_level")
+
+    if isinstance(raw, str):
+        raw = raw.strip().lstrip("hH")
+    if isinstance(raw, bool):
+        return 2
+    try:
+        level = int(raw)
+    except (TypeError, ValueError):
+        return 2
+    return level if 2 <= level <= 6 else 2
+
+
 def get_configured_language(config_data: dict) -> str:
     """Read and normalize project.theme.language from zensical.toml.
 
@@ -203,9 +234,10 @@ def install(target: Path | str | None = None) -> Path:
     # Write the configuration resolved from zensical.toml
     language = get_configured_language(config_data)
     progress_bar = get_configured_progress_bar(config_data)
+    max_heading_level = get_configured_max_heading_level(config_data)
     config_mjs = plugin_assets / "config.mjs"
     config_mjs.write_text(
-        f'export const config = {{\n\tlanguage: "{language}",\n\tprogressBar: "{progress_bar}"\n}};\n',
+        f'export const config = {{\n\tlanguage: "{language}",\n\tprogressBar: "{progress_bar}",\n\tmaxHeadingLevel: {max_heading_level}\n}};\n',
         encoding="utf-8",
     )
 

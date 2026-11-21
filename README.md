@@ -153,7 +153,16 @@ language = "en" # "en" (English), "ja" (Japanese), or "pt" (Portuguese)
 
 [project.extra.slides]
 progress_bar = "top" # "top" (default), "bottom", or "none"
+max_heading_level = 2 # 2 (H2, default) up to 6 (e.g. 3 for H2 + H3)
 ```
+
+### Sub-heading breaks & explicit markers
+
+By default, only `##` (`<h2>`) headings create slides so regular documentation pages keep subsections together. You can opt in when presenting dense sections:
+
+- **Per-page heading depth:** add `<!-- slides: level=3 -->` anywhere in a page to split on both `##` and `###` (`<!-- slides: level=2 -->` reverts a single page even if global `max_heading_level = 3`). Empty `##` intros followed immediately by `###` automatically merge into the first `###` slide, and sub-slides show `"Section › Subsection"` in the bottom bar.
+- **Global setting:** set `max_heading_level = 3` in `[project.markdown_extensions.zensical_slides]`, `[project.extra.slides]`, or `window.ZENSICAL_SLIDES_CONFIG = { max_heading_level: 3 }`.
+- **Single manual break:** add `<!-- slide -->` between blocks or add `{ .slide }` to any heading (with Markdown `attr_list`). Use `{ .no-slide }` to keep an unwanted sub-heading grouped.
 
 ___
 

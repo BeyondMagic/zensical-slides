@@ -68,3 +68,12 @@ def test_make_extension() -> None:
     assert isinstance(ext, ZensicalSlidesExtension)
     assert ext.getConfig("progress_bar") == "bottom"
 
+
+def test_extension_max_heading_level_config() -> None:
+    md = markdown.Markdown(
+        extensions=[ZensicalSlidesExtension(assets="none", max_heading_level=3)]
+    )
+    html = md.convert("# Slide\n\nContent")
+    assert '"max_heading_level": 3' in html
+
+
